@@ -9,6 +9,7 @@ namespace MvcTestApp.Domain.Users
         public void SetUserName(string userName)
         {
             if(userName == string.Empty) throw new ArgumentException("UserName cannot be empty.", nameof(userName));
+            if(userName == " ") throw new ArgumentException("UserName cannot be white space.", nameof(userName));
 
             UserName = userName;
         }
