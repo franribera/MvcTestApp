@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MvcTestApp.Domain.Users;
 
 namespace MvcTestApp.Domain.Tests.Users
@@ -6,18 +7,31 @@ namespace MvcTestApp.Domain.Tests.Users
     [TestClass]
     public class UserTests
     {
+        private User _user;
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            _user = new User();
+        }
+
         [TestMethod]
         public void SetUserName_SetsValueIntoUserNameField()
         {
             // Arrange
-            var user = new User();
             const string expectedUserName = "userName";
 
             // Act
-            user.SetUserName(expectedUserName);
+            _user.SetUserName(expectedUserName);
             
             // Assert
-            Assert.AreEqual(expectedUserName, user.UserName);
+            Assert.AreEqual(expectedUserName, _user.UserName);
+        }
+
+        [TestMethod]
+        public void SetUserName_EmptyValue_ThrowsArgumentException()
+        {
+            Assert.ThrowsException<ArgumentException>(() => _user.SetUserName(string.Empty));
         }
     }
 }
