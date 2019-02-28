@@ -1,25 +1,18 @@
-﻿using System;
+﻿using MvcTestApp.Domain.ValueObjects;
 
 namespace MvcTestApp.Domain.Users
 {
     public class User
     {
-        public string UserName { get; protected set; }
+        public Name UserName { get; protected set; }
 
-        public User(string userName)
+        public User(Name userName)
         {
-            SetUserNameCore(userName);
+            UserName = userName;
         }
 
-        public void SetUserName(string userName)
+        public void SetUserName(Name userName)
         {
-            SetUserNameCore(userName);
-        }
-
-        protected void SetUserNameCore(string userName)
-        {
-            if (userName.Trim() == string.Empty) throw new ArgumentException("UserName cannot be empty.", nameof(userName));
-
             UserName = userName;
         }
     }
