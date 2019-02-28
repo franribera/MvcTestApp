@@ -6,9 +6,19 @@ namespace MvcTestApp.Domain.Users
     {
         public string UserName { get; protected set; }
 
+        public User(string userName)
+        {
+            SetUserNameCore(userName);
+        }
+
         public void SetUserName(string userName)
         {
-            if(userName.Trim() == string.Empty) throw new ArgumentException("UserName cannot be empty.", nameof(userName));
+            SetUserNameCore(userName);
+        }
+
+        protected void SetUserNameCore(string userName)
+        {
+            if (userName.Trim() == string.Empty) throw new ArgumentException("UserName cannot be empty.", nameof(userName));
 
             UserName = userName;
         }

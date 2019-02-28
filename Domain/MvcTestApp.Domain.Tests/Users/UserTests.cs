@@ -8,17 +8,19 @@ namespace MvcTestApp.Domain.Tests.Users
     public class UserTests
     {
         private User _user;
+        private const string DefaultUserName = "defaultUserName";
 
         [TestInitialize]
         public void TestInitialize()
         {
-            _user = new User();
+            _user = new User(DefaultUserName);
         }
 
         [TestMethod]
         public void SetUserName_SetsValueIntoUserNameField()
         {
             // Arrange
+
             const string expectedUserName = "userName";
 
             // Act
@@ -40,6 +42,19 @@ namespace MvcTestApp.Domain.Tests.Users
             Assert.ThrowsException<ArgumentException>(() => _user.SetUserName(" "));
             Assert.ThrowsException<ArgumentException>(() => _user.SetUserName("  "));
             Assert.ThrowsException<ArgumentException>(() => _user.SetUserName("   "));
+        }
+
+        [TestMethod]
+        public void User_RequiresAnUserName()
+        {
+            // Arrange
+            const string expectedUserName = "userName";
+
+            // Act
+            var user = new User(expectedUserName);
+
+            // Assert
+            Assert.AreEqual(expectedUserName, user.UserName);
         }
     }
 }
