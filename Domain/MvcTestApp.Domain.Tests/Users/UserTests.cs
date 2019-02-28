@@ -35,9 +35,11 @@ namespace MvcTestApp.Domain.Tests.Users
         }
 
         [TestMethod]
-        public void SetUserName_WhiteSpaceValue_ThrowsArgumentException()
+        public void SetUserName_WhiteSpacesValues_AreTreatedAsEmptyValueAndThrowsArgumentException()
         {
             Assert.ThrowsException<ArgumentException>(() => _user.SetUserName(" "));
+            Assert.ThrowsException<ArgumentException>(() => _user.SetUserName("  "));
+            Assert.ThrowsException<ArgumentException>(() => _user.SetUserName("   "));
         }
     }
 }
