@@ -22,7 +22,7 @@ namespace MvcTestApp.Domain.Tests.ValueObjects
         }
 
         [TestMethod]
-        public void Name_EqualsIfValuesAreEqual()
+        public void Equality_SameNameValue_ReturnsTrue()
         {
             // Arrange
             const string defaultName = "defaultName";
@@ -33,6 +33,22 @@ namespace MvcTestApp.Domain.Tests.ValueObjects
 
             // Assert
             Assert.AreEqual(name1, name2);
+            Assert.IsFalse(ReferenceEquals(name1, name2));
+        }
+
+        [TestMethod]
+        public void Equality_DifferentNameValue_ReturnsFalse()
+        {
+            // Arrange
+            const string nameValue1 = "name1";
+            const string nameValue2 = "name2";
+
+            // Act
+            var name1 = new Name(nameValue1);
+            var name2 = new Name(nameValue2);
+
+            // Assert
+            Assert.AreNotEqual(name1, name2);
             Assert.IsFalse(ReferenceEquals(name1, name2));
         }
     }
