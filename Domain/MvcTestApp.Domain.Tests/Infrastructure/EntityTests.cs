@@ -7,7 +7,7 @@ namespace MvcTestApp.Domain.Tests.Infrastructure
     [TestClass]
     public class EntityTests
     {
-        public class DummyEntity : Entity
+        private class DummyEntity : Entity
         {
             public void ChangeId(Guid id)
             {
@@ -15,7 +15,7 @@ namespace MvcTestApp.Domain.Tests.Infrastructure
             }
         }
 
-        public class DummyChildEntity : DummyEntity
+        private class DummyChildEntity : DummyEntity
         { }
 
         [TestMethod]
