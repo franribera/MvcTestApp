@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -24,6 +25,13 @@ namespace MvcTestApp.Domain.Users
         {
             UserName = userName;
             Password = password;
+        }
+
+        public void AddRole(Role role)
+        {
+            if(_roles.Contains(role)) throw new InvalidOperationException("User already has the specified role assigned.");
+
+            _roles.Add(role);
         }
     }
 }
