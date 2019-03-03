@@ -33,5 +33,12 @@ namespace MvcTestApp.Domain.Users
 
             _roles.Add(role);
         }
+
+        public void RemoveRole(Role role)
+        {
+            if (!_roles.Contains(role)) throw new InvalidOperationException("User does not have the specified role.");
+
+            _roles.Remove(role);
+        }
     }
 }

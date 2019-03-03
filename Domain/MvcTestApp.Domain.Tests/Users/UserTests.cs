@@ -1,51 +1,79 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MvcTestApp.Domain.Tests.Builders;
 using MvcTestApp.Domain.Users;
-using MvcTestApp.Domain.ValueObjects;
 
 namespace MvcTestApp.Domain.Tests.Users
 {
     [TestClass]
     public class UserTests
     {
-        private User _defaultUser;
-
-        [TestInitialize]
-        public void TestInitialize()
-        {
-            _defaultUser = new User(new Name("Name"), new Password("Password"));
-        }
-
         [TestMethod]
-        public void AddRole_AddsRoleToUserRolesCollection()
+        public void AddRole_UserWithoutRoles_AddsRoleToUser()
         {
+            // Arrange
+            var user = new UserBuilder().Build();
+
             // Act
-            _defaultUser.AddRole(Role.PAGE_1);
+            user.AddRole(Role.PAGE_1);
 
             // Assert
-            Assert.IsTrue(_defaultUser.Roles.Contains(Role.PAGE_1));
+            Assert.IsTrue(user.Roles.Contains(Role.PAGE_1));
         }
 
         [TestMethod]
         public void AddRole_ExistingRole_ThrowsException()
         {
+            // Arrange
+            var user = new UserBuilder().Build();
+
             // Act
-            _defaultUser.AddRole(Role.PAGE_1);
+            user.AddRole(Role.PAGE_1);
 
             // Assert
-            Assert.ThrowsException<InvalidOperationException>(() => _defaultUser.AddRole(Role.PAGE_1));
+            Assert.ThrowsException<InvalidOperationException>(() => user.AddRole(Role.PAGE_1));
         }
 
         [TestMethod]
         public void AddRole_NotExistingRole_RoleIsAdded()
         {
+            // Arrange
+            var user = new UserBuilder()
+                .WithRoles(new[]{ Role.PAGE_1 })
+                .Build();
+
             // Act
-            _defaultUser.AddRole(Role.PAGE_1);
-            _defaultUser.AddRole(Role.PAGE_2);
+            user.AddRole(Role.PAGE_2);
 
             // Assert
-            Assert.IsTrue(_defaultUser.Roles.Contains(Role.PAGE_1));
-            Assert.IsTrue(_defaultUser.Roles.Contains(Role.PAGE_2));
+            Assert.IsTrue(user.Roles.Contains(Role.PAGE_2));
+        }
+
+        [TestMethod]
+        public void RemoveRole_UserHasTheSpecifiedRole_RemovesRoleFromUser()
+        {
+            // Arrange
+            var user = new UserBuilder()
+                .WithRoles(new[] { Role.PAGE_1 })
+                .Build();
+
+            // Act
+            user.RemoveRole(Role.PAGE_1);
+
+            // Assert
+            Assert.IsFalse(user.Roles.Contains(Role.PAGE_1));
+        }
+
+        [TestMethod]
+        public void RemoveRole_NotExistingRole_ThrowsException()
+        {
+            // Arrange
+            var user = new UserBuilder()
+                .WithRoles(new[] { Role.PAGE_1 })
+                .Build();
+
+            // Act - Assert
+            Assert.ThrowsException<InvalidOperationException>(() => user.RemoveRole(Role.PAGE_2));
         }
     }
 }
