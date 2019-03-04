@@ -1,9 +1,8 @@
 ﻿using System.Linq;
-using MvcTestApp.Application.Commands.Users;
 using MvcTestApp.Domain.Users;
 using MvcTestApp.Domain.ValueObjects;
 
-namespace MvcTestApp.Application.Commands
+namespace MvcTestApp.Application.Commands.Users
 {
     public class UserFactory : IUserFactory
     {

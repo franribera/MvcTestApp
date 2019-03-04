@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using MvcTestApp.Application.Commands;
+using MvcTestApp.Application.Commands.Users;
 using MvcTestApp.Application.Commands.Users.Create;
 using MvcTestApp.Application.Infrastructure;
 using MvcTestApp.Common.TestLib.Builders;
