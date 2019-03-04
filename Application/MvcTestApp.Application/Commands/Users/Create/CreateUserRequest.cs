@@ -14,16 +14,17 @@ namespace MvcTestApp.Application.Commands.Users.Create
         {
             UserName = userName ?? throw new ArgumentNullException(nameof(userName), "UserName not set.");
             Password = password ?? throw new ArgumentNullException(nameof(password), "Password not set.");
-            Roles = AssertRoles(roles.ToList());
-
+            Roles = AssertRoles(roles);
         }
 
-        private IEnumerable<string> AssertRoles(List<string> roles)
+        private IEnumerable<string> AssertRoles(IEnumerable<string> roles)
         {
-            if(roles == null) throw new ArgumentNullException(nameof(roles));
-            if(roles.Count != roles.Distinct().Count()) throw new ArgumentException("User can't has duplicated roles.", nameof(roles));
+            if(roles == null) throw new ArgumentNullException(nameof(roles), "Roles not set.");
+            var rolesList = roles.ToList();
+            if(!rolesList.Any()) throw new ArgumentException( "User must has 1 role at least.", nameof(roles));
+            if(rolesList.Count() != rolesList.Distinct().Count()) throw new ArgumentException("User can't has duplicated roles.", nameof(roles));
 
-            return roles;
+            return rolesList;
         }
     }
 }
