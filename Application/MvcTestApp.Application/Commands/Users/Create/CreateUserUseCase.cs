@@ -15,7 +15,6 @@ namespace MvcTestApp.Application.Commands.Users.Create
             _userFactory = userFactory;
         }
 
-        /// <inheritdoc />
         public async Task Handle(CreateUserRequest request, IOutputPort<Response<User>> outputPort)
         {
             var user = _userFactory.Create(request);
@@ -24,7 +23,6 @@ namespace MvcTestApp.Application.Commands.Users.Create
             if (existingUser == null)
             {
                 await _userRepository.Add(user);
-
                 outputPort.Handle(Response<User>.Success(user, "User successfully created."));
             }
             else

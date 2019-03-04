@@ -8,5 +8,6 @@ namespace MvcTestApp.Domain.Users
     {
         Task<User> Get(Name username);
         Task Add(User user);
+        Task Delete(User user);
     }
 }
