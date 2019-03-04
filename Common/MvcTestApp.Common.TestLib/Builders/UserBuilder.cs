@@ -43,7 +43,7 @@ namespace MvcTestApp.Common.TestLib.Builders
             return this;
         }
 
-        public UserBuilder WithRoles(Role[] value)
+        public UserBuilder WithRoles(params Role[] value)
         {
             _roles.AddRange(value);
             return this;

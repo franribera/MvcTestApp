@@ -2,11 +2,11 @@
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using MvcTestApp.Application.Commands;
 using MvcTestApp.Application.Commands.Users.Create;
 using MvcTestApp.Application.Infrastructure;
 using MvcTestApp.Common.TestLib.Builders;
 using MvcTestApp.Domain.Users;
-using MvcTestApp.Domain.ValueObjects;
 
 namespace MvcTestApp.Application.Tests.Commands.Users
 {
@@ -14,6 +14,7 @@ namespace MvcTestApp.Application.Tests.Commands.Users
     public class CreateUserUseCaseTests
     {
         private Mock<IUserRepository> _userRepositoryMock;
+        private Mock<IUserFactory> _userFactoryMock;
         private Mock<IOutputPort<Response<User>>> _outputPortMock;
 
         private CreateUserUseCase _createUserUseCase;
@@ -22,18 +23,21 @@ namespace MvcTestApp.Application.Tests.Commands.Users
         public void TestInitialize()
         {
             _userRepositoryMock = new Mock<IUserRepository>();
+            _userFactoryMock = new Mock<IUserFactory>();
             _outputPortMock = new Mock<IOutputPort<Response<User>>>();
 
-            _createUserUseCase = new CreateUserUseCase(_userRepositoryMock.Object);
+            _createUserUseCase = new CreateUserUseCase(_userRepositoryMock.Object, _userFactoryMock.Object);
         }
 
         [TestMethod]
         public async Task Handle_ExistingUser_PassesFailedResultToOutputPort()
         {
             // Arrange
-            var createUserRequest = new CreateUserRequest("userName", "password", new[] {"PAGE_1"});
-            var existingUser = new UserBuilder().Build();
-            _userRepositoryMock.Setup(mock => mock.Get(It.IsAny<Name>())).ReturnsAsync(existingUser);
+            var expectedUser = new UserBuilder().WithRoles(Role.PAGE_1).Build();
+            var createUserRequest = new CreateUserRequest(expectedUser.UserName.Value, expectedUser.Password.Value,
+                expectedUser.Roles.Select(role => role.Name.Value));
+            _userFactoryMock.Setup(mock => mock.Create(createUserRequest)).Returns(expectedUser);
+            _userRepositoryMock.Setup(mock => mock.Get(expectedUser.UserName)).ReturnsAsync(expectedUser);
 
             // Act
             await _createUserUseCase.Handle(createUserRequest, _outputPortMock.Object);
@@ -46,23 +50,17 @@ namespace MvcTestApp.Application.Tests.Commands.Users
         public async Task Handle_NotExistingUser_CreatesUserAndPassesSuccessfullResultToOutputPort()
         {
             // Arrange
-            const string userName = "userName";
-            const string password = "password;";
-            var createUserRequest = new CreateUserRequest(userName, password,
-                new[] {Role.PAGE_1.Name.Value, Role.PAGE_2.Name.Value});
-            var expectedUserName = new Name(userName);
-            var expectedPassword = new Password(password);
-            var expectedRoles = new Role[] {Role.PAGE_1, Role.PAGE_2};
-            _userRepositoryMock.Setup(mock => mock.Get(It.IsAny<Name>())).ReturnsAsync((User)null);
+            var expectedUser = new UserBuilder().WithRoles(Role.PAGE_1, Role.PAGE_2).Build();
+            var createUserRequest = new CreateUserRequest(expectedUser.UserName.Value, expectedUser.Password.Value,
+                expectedUser.Roles.Select(role => role.Name.Value));
+            _userFactoryMock.Setup(mock => mock.Create(createUserRequest)).Returns(expectedUser);
+            _userRepositoryMock.Setup(mock => mock.Get(expectedUser.UserName)).ReturnsAsync((User)null);
 
             // Act
             await _createUserUseCase.Handle(createUserRequest, _outputPortMock.Object);
 
             // Assert
-            _userRepositoryMock.Verify(mock => mock.Add(It.Is<User>(user => 
-                user.UserName == expectedUserName && 
-                user.Password == expectedPassword &&
-                user.Roles.Select(role => role.Name).All(role => expectedRoles.Select(expectedRole => expectedRole.Name).Contains(role)))));
+            _userRepositoryMock.Verify(mock => mock.Add(expectedUser));
             _outputPortMock.Verify(mock => mock.Handle(It.Is<Response<User>>(response => response.SuccessFul)));
         }
     }

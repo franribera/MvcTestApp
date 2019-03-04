@@ -1,34 +1,31 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using MvcTestApp.Application.Infrastructure;
 using MvcTestApp.Domain.Users;
-using MvcTestApp.Domain.ValueObjects;
 
 namespace MvcTestApp.Application.Commands.Users.Create
 {
     public sealed class CreateUserUseCase : IInputPort<CreateUserRequest, Response<User>>
     {
         private readonly IUserRepository _userRepository;
+        private readonly IUserFactory _userFactory;
 
-        public CreateUserUseCase(IUserRepository userRepository)
+        public CreateUserUseCase(IUserRepository userRepository, IUserFactory userFactory)
         {
             _userRepository = userRepository;
+            _userFactory = userFactory;
         }
 
         /// <inheritdoc />
         public async Task Handle(CreateUserRequest request, IOutputPort<Response<User>> outputPort)
         {
-            var userName = new Name(request.UserName);
-            var user = await _userRepository.Get(userName);
+            var user = _userFactory.Create(request);
+            var existingUser = await _userRepository.Get(user.UserName);
 
-            if (user == null)
+            if (existingUser == null)
             {
-                var password = new Password(request.Password);
-                var newUser = new User(userName, password);
-                request.Roles.ToList().ForEach(role => newUser.AddRole(new Role(new Name(role))));
-                await _userRepository.Add(newUser);
+                await _userRepository.Add(user);
 
-                outputPort.Handle(Response<User>.Success(newUser, "User successfully created."));
+                outputPort.Handle(Response<User>.Success(user, "User successfully created."));
             }
             else
             {
