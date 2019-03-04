@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\MvcTestApp.Common.TestLib\MvcTestApp.Common.TestLib.csproj" />
     <ProjectReference Include="..\MvcTestApp.Domain\MvcTestApp.Domain.csproj" />
   </ItemGroup>
 

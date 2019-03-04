@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MvcTestApp.Domain.Tests.Builders;
+using MvcTestApp.Common.TestLib.Builders;
 using MvcTestApp.Domain.Users;
 
 namespace MvcTestApp.Domain.Tests.Users
