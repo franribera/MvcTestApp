@@ -22,7 +22,7 @@ namespace MvcTestApp.Application.Commands.Users.Create
             if(roles == null) throw new ArgumentNullException(nameof(roles), "Roles not set.");
             var rolesList = roles.ToList();
             if(!rolesList.Any()) throw new ArgumentException( "User must has 1 role at least.", nameof(roles));
-            if(rolesList.Count() != rolesList.Distinct().Count()) throw new ArgumentException("User can't has duplicated roles.", nameof(roles));
+            if(rolesList.Count != rolesList.Distinct().Count()) throw new ArgumentException("User can't has duplicated roles.", nameof(roles));
 
             return rolesList;
         }

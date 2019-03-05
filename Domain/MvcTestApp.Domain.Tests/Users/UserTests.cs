@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MvcTestApp.Common.TestLib.Builders;
 using MvcTestApp.Domain.Users;
@@ -9,71 +10,24 @@ namespace MvcTestApp.Domain.Tests.Users
     public class UserTests
     {
         [TestMethod]
-        public void AddRole_UserWithoutRoles_AddsRoleToUser()
+        public void SetRoles_EmptyRolesCollection_ThrowsException()
         {
             // Arrange
-            var user = new UserBuilder().Build();
+            var user = new UserBuilder().WithRoles(Role.PAGE_1).Build();
 
             // Act
-            user.AddRole(Role.PAGE_1);
-
-            // Assert
-            Assert.IsTrue(user.Roles.Contains(Role.PAGE_1));
+            Assert.ThrowsException<ArgumentException>(() => user.SetRoles(new List<Role>()));
         }
 
         [TestMethod]
-        public void AddRole_ExistingRole_ThrowsException()
+        public void SetRoles_DuplicatedROles_ThrowsException()
         {
             // Arrange
-            var user = new UserBuilder().Build();
+            var user = new UserBuilder().WithRoles().Build();
+            var roles = new List<Role> { Role.PAGE_1, Role.PAGE_1 };
 
             // Act
-            user.AddRole(Role.PAGE_1);
-
-            // Assert
-            Assert.ThrowsException<InvalidOperationException>(() => user.AddRole(Role.PAGE_1));
-        }
-
-        [TestMethod]
-        public void AddRole_NotExistingRole_RoleIsAdded()
-        {
-            // Arrange
-            var user = new UserBuilder()
-                .WithRoles(new[]{ Role.PAGE_1 })
-                .Build();
-
-            // Act
-            user.AddRole(Role.PAGE_2);
-
-            // Assert
-            Assert.IsTrue(user.Roles.Contains(Role.PAGE_2));
-        }
-
-        [TestMethod]
-        public void RemoveRole_UserHasTheSpecifiedRole_RemovesRoleFromUser()
-        {
-            // Arrange
-            var user = new UserBuilder()
-                .WithRoles(new[] { Role.PAGE_1 })
-                .Build();
-
-            // Act
-            user.RemoveRole(Role.PAGE_1);
-
-            // Assert
-            Assert.IsFalse(user.Roles.Contains(Role.PAGE_1));
-        }
-
-        [TestMethod]
-        public void RemoveRole_NotExistingRole_ThrowsException()
-        {
-            // Arrange
-            var user = new UserBuilder()
-                .WithRoles(new[] { Role.PAGE_1 })
-                .Build();
-
-            // Act - Assert
-            Assert.ThrowsException<InvalidOperationException>(() => user.RemoveRole(Role.PAGE_2));
+            Assert.ThrowsException<ArgumentException>(() => user.SetRoles(roles));
         }
     }
 }

@@ -1,9 +1,10 @@
-﻿using MvcTestApp.Domain.Infrastructure;
+﻿using System.Collections.Generic;
+using MvcTestApp.Domain.Infrastructure;
 using MvcTestApp.Domain.ValueObjects;
 
 namespace MvcTestApp.Domain.Users
 {
-    public class Role : Entity
+    public class Role : ValueObject
     {
         // Built-in roles
         public static Role PAGE_1 = new Role(new Name("PAGE_1"));
@@ -19,6 +20,12 @@ namespace MvcTestApp.Domain.Users
         public Role(Name name) : this()
         {
             Name = name;
+        }
+
+        /// <inheritdoc />
+        protected override IEnumerable<object> GetAtomicValues()
+        {
+            yield return Name;
         }
     }
 }

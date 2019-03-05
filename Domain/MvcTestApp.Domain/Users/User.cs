@@ -27,18 +27,26 @@ namespace MvcTestApp.Domain.Users
             Password = password;
         }
 
-        public void AddRole(Role role)
+        public void SetName(Name name)
         {
-            if(_roles.Contains(role)) throw new InvalidOperationException("User already has the specified role assigned.");
-
-            _roles.Add(role);
+            UserName = name;
         }
 
-        public void RemoveRole(Role role)
+        public void SetPassword(Password password)
         {
-            if (!_roles.Contains(role)) throw new InvalidOperationException("User does not have the specified role.");
+            Password = password;
+        }
 
-            _roles.Remove(role);
+        public void SetRoles(IEnumerable<Role> roles)
+        {
+            var rolesList = roles.ToList();
+
+            if(!rolesList.Any()) throw new ArgumentException("User shall has one role at least.", nameof(roles));
+
+            if (rolesList.Count != rolesList.Distinct().Count())
+                throw new ArgumentException("User can't has duplicated roles.", nameof(roles));
+
+            _roles = rolesList;
         }
     }
 }
