@@ -20,9 +20,9 @@ namespace MvcTestApp.Controllers.Users
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] CreateUserModel value)
+        public async Task<IActionResult> Post([FromBody] CreateUserModel model)
         {
-            var createUserRequest = new CreateUserRequest(value.UserName, value.Password, value.Roles);
+            var createUserRequest = new CreateUserRequest(model.UserName, model.Password, model.Roles);
             await _createUserUseCase.Handle(createUserRequest, _createUserPresenter);
 
             return _createUserPresenter.ActionResult;
