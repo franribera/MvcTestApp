@@ -10,4 +10,10 @@
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Application\MvcTestApp.Application\MvcTestApp.Application.csproj" />
+    <ProjectReference Include="..\Domain\MvcTestApp.Domain\MvcTestApp.Domain.csproj" />
+    <ProjectReference Include="..\Infrastructure\MvcTestApp.Infrastructure\MvcTestApp.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -4,7 +4,7 @@ using MvcTestApp.Domain.Users;
 
 namespace MvcTestApp.Application.Commands.Users.Create
 {
-    public sealed class CreateUserUseCase : IInputPort<CreateUserRequest, Response<User>>
+    public sealed class CreateUserUseCase : ICreateUserUseCase
     {
         private readonly IUserRepository _userRepository;
         private readonly IUserFactory _userFactory;
