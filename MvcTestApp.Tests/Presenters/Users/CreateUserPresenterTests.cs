@@ -25,8 +25,6 @@ namespace MvcTestApp.Tests.Presenters.Users
             presenter.Handle(response);
 
             // Assert
-            Assert.IsNotNull(presenter.ActionResult);
-            Assert.IsInstanceOfType(presenter.ActionResult, typeof(ConflictObjectResult));
             var conflictActionResult = presenter.ActionResult as ConflictObjectResult;
             Assert.AreEqual((int)HttpStatusCode.Conflict, conflictActionResult.StatusCode);
             Assert.AreEqual(response.Errors, conflictActionResult.Value);
@@ -47,8 +45,6 @@ namespace MvcTestApp.Tests.Presenters.Users
             presenter.Handle(response);
 
             // Assert
-            Assert.IsNotNull(presenter.ActionResult);
-            Assert.IsInstanceOfType(presenter.ActionResult, typeof(CreatedResult));
             var createdActionResult = presenter.ActionResult as CreatedResult;
             Assert.AreEqual((int)HttpStatusCode.Created, createdActionResult.StatusCode);
             var userModel = createdActionResult.Value as UserModel;

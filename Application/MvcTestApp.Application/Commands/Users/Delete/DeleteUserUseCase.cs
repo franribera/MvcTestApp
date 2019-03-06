@@ -5,7 +5,7 @@ using MvcTestApp.Domain.ValueObjects;
 
 namespace MvcTestApp.Application.Commands.Users.Delete
 {
-    public sealed class DeleteUserUseCase : IInputPort<DeleteUserRequest, Response<User>>
+    public sealed class DeleteUserUseCase : IDeleteUserUseCase
     {
         private readonly IUserRepository _userRepository;
 

@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MvcTestApp.Application.Commands.Users;
 using MvcTestApp.Application.Commands.Users.Create;
+using MvcTestApp.Application.Commands.Users.Delete;
 using MvcTestApp.Domain.Users;
 using MvcTestApp.Infrastructure;
 using MvcTestApp.Presenters.Users;
@@ -28,6 +29,10 @@ namespace MvcTestApp
             services.AddScoped<ICreateUserUseCase, CreateUserUseCase>();
             services.AddScoped<ICreateUserPresenter, CreateUserPresenter>();
             services.AddScoped<IUserFactory, UserFactory>();
+
+            services.AddScoped<IDeleteUserUseCase, DeleteUserUseCase>();
+            services.AddScoped<IDeleteUserPresenter, DeleteUserPresenter>();
+
             services.AddSingleton<IUserRepository, UserRepository>();
         }
 
