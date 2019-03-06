@@ -1,12 +1,10 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using MvcTestApp.Application.Infrastructure;
 using MvcTestApp.Domain.Users;
-using MvcTestApp.Domain.ValueObjects;
 
 namespace MvcTestApp.Application.Commands.Users.Update
 {
-    public class UpdateUserUseCase : IInputPort<UpdateUserRequest, Response<User>>
+    public class UpdateUserUseCase : IUpdateUserUseCase
     {
         private readonly IUserRepository _userRepository;
 
@@ -15,27 +13,16 @@ namespace MvcTestApp.Application.Commands.Users.Update
             _userRepository = userRepository;
         }
 
-        public async Task Handle(UpdateUserRequest request, IOutputPort<Response<User>> outputPort)
+        public async Task Handle(UpdateUserRequest request, IOutputPort<UpdateUserResponse> outputPort)
         {
-            var existingUser = await _userRepository.Get(request.Id);
+            var userExistAssertion = new AssertUserExistsStep(_userRepository);
+            var duplicateNameAssertion = new AssertUserNameDuplication(_userRepository);
+            var fieldsAssertion = new AssertFields(_userRepository);
 
-            if (existingUser == null)
-            {
-                outputPort.Handle(Response<User>.Fail(new[] { "User does not exist." }));
-            }
-            else if (request.UserName != null && await _userRepository.Get(new Name(request.UserName)) != null)
-            {
-                outputPort.Handle(Response<User>.Fail(new[] { "The specified user name is already in use." }));
-            }
-            else
-            {
-                if (request.UserName != null) existingUser.SetName(new Name(request.UserName));
-                if (request.Password != null) existingUser.SetPassword(new Password(request.Password));
-                if (request.Roles != null) existingUser.SetRoles(request.Roles.Select(role => new Role(new Name(role))));
+            userExistAssertion.SetSuccessor(duplicateNameAssertion);
+            duplicateNameAssertion.SetSuccessor(fieldsAssertion);
 
-                await _userRepository.Update(existingUser);
-                outputPort.Handle(Response<User>.Success(existingUser, "User successfully updated."));
-            }
+            outputPort.Handle(await userExistAssertion.AssertForUpdate(request));
         }
     }
 }

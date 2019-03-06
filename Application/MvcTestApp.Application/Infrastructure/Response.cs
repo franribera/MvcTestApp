@@ -3,7 +3,7 @@ using MvcTestApp.Domain.Infrastructure;
 
 namespace MvcTestApp.Application.Infrastructure
 {
-    public class Response<TEntity> where TEntity : Entity
+    public class Response<TEntity> : IResponse<TEntity> where TEntity : Entity
     {
         public bool SuccessFul { get; }
         public string Message { get; }

@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MvcTestApp.Application.Infrastructure;
-using MvcTestApp.Domain.Users;
 
 namespace MvcTestApp.Presenters
 {
-    public interface IPresenter : IOutputPort<Response<User>>
+    public interface IPresenter<in TResponse> : IOutputPort<TResponse>
     {
         IActionResult ActionResult { get; }
     }

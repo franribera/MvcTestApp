@@ -3,7 +3,7 @@ using MvcTestApp.Domain.Users;
 
 namespace MvcTestApp.Presenters.Users
 {
-    public interface ICreateUserPresenter : IPresenter
+    public interface ICreateUserPresenter : IPresenter<Response<User>>
     {
     }
 }

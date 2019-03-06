@@ -16,7 +16,7 @@ namespace MvcTestApp.Application.Tests.Commands.Users.Update
     public class UpdateUserUseCaseTests
     {
         private Mock<IUserRepository> _userRepositoryMock;
-        private Mock<IOutputPort<Response<User>>> _outputPortMock;
+        private Mock<IOutputPort<UpdateUserResponse>> _outputPortMock;
 
         private UpdateUserUseCase _updateUserUseCase;
 
@@ -24,9 +24,8 @@ namespace MvcTestApp.Application.Tests.Commands.Users.Update
         public void TestInitialize()
         {
             _userRepositoryMock = new Mock<IUserRepository>();
-            _outputPortMock = new Mock<IOutputPort<Response<User>>>();
+            _outputPortMock = new Mock<IOutputPort<UpdateUserResponse>>();
             _updateUserUseCase = new UpdateUserUseCase(_userRepositoryMock.Object);
-
         }
 
         [TestMethod]
@@ -40,7 +39,7 @@ namespace MvcTestApp.Application.Tests.Commands.Users.Update
             await _updateUserUseCase.Handle(request, _outputPortMock.Object);
 
             // Assert
-            _outputPortMock.Verify(mock => mock.Handle(It.Is<Response<User>>(response => response.SuccessFul == false)));
+            _outputPortMock.Verify(mock => mock.Handle(It.Is<UpdateUserResponse>(response => response.SuccessFul == false && response.NotFound)));
         }
 
         [TestMethod]
@@ -49,6 +48,23 @@ namespace MvcTestApp.Application.Tests.Commands.Users.Update
             // Arrange
             var request = new UpdateUserRequest(Guid.NewGuid(), "duplicatedName", "", new List<string>());
             var existingUser = new UserBuilder().Build();
+            var userWithDuplicatedName = new UserBuilder().WithName(new Name(request.UserName)).Build();
+            _userRepositoryMock.Setup(mock => mock.Get(request.Id)).ReturnsAsync(existingUser);
+            _userRepositoryMock.Setup(mock => mock.Get(It.Is<Name>(name => name.Value == request.UserName))).ReturnsAsync(userWithDuplicatedName);
+
+            // Act
+            await _updateUserUseCase.Handle(request, _outputPortMock.Object);
+
+            // Assert
+            _outputPortMock.Verify(mock => mock.Handle(It.Is<UpdateUserResponse>(response => response.SuccessFul == false && response.DuplicatedName)));
+        }
+
+        [TestMethod]
+        public async Task Handle_DuplicatedUserNameForSameUser_PassesSuccessfulResultToOutputPort()
+        {
+            // Arrange
+            var existingUser = new UserBuilder().WithName(new Name("duplicatedName")).WithRoles(Role.PAGE_1).Build();
+            var request = new UpdateUserRequest(existingUser.Id, existingUser.UserName.Value, "password", new []{ Role.PAGE_2.Name.Value });
             _userRepositoryMock.Setup(mock => mock.Get(request.Id)).ReturnsAsync(existingUser);
             _userRepositoryMock.Setup(mock => mock.Get(It.Is<Name>(name => name.Value == request.UserName))).ReturnsAsync(existingUser);
 
@@ -56,7 +72,7 @@ namespace MvcTestApp.Application.Tests.Commands.Users.Update
             await _updateUserUseCase.Handle(request, _outputPortMock.Object);
 
             // Assert
-            _outputPortMock.Verify(mock => mock.Handle(It.Is<Response<User>>(response => response.SuccessFul == false)));
+            _outputPortMock.Verify(mock => mock.Handle(It.Is<UpdateUserResponse>(response => response.SuccessFul)));
         }
 
         [TestMethod]
@@ -119,7 +135,7 @@ namespace MvcTestApp.Application.Tests.Commands.Users.Update
             Assert.AreEqual(expectedRole, existingUser.Roles.Single());
 
             _userRepositoryMock.Verify(mock => mock.Update(existingUser));
-            _outputPortMock.Verify(mock => mock.Handle(It.Is<Response<User>>(response => response.SuccessFul)));
+            _outputPortMock.Verify(mock => mock.Handle(It.Is<UpdateUserResponse>(response => response.SuccessFul)));
         }
     }
 }
