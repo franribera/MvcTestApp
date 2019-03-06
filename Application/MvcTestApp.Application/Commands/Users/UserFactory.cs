@@ -11,8 +11,7 @@ namespace MvcTestApp.Application.Commands.Users
         {
             var userName = new Name(userRequest.UserName);
             var password = new Password(userRequest.Password);
-            var user = new User(userName, password);
-            user.SetRoles(userRequest.Roles.Select(role => new Role(new Name(role))));
+            var user = new User(userName, password, userRequest.Roles.Select(role => new Role(new Name(role))));
 
             return user;
         }

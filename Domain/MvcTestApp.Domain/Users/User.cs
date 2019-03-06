@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -10,6 +9,10 @@ namespace MvcTestApp.Domain.Users
 {
     public class User : Aggregate
     {
+        public static User User1 = new User(new Name("User1"), new Password("User1"), new List<Role> {Role.PAGE_1});
+        public static User User2 = new User(new Name("User2"), new Password("User2"), new List<Role> {Role.PAGE_2});
+        public static User User3 = new User(new Name("User3"), new Password("User3"), new List<Role> {Role.PAGE_3});
+
         private ICollection<Role> _roles;
 
         public Name UserName { get; protected set; }
@@ -21,10 +24,11 @@ namespace MvcTestApp.Domain.Users
             _roles = new List<Role>();
         }
 
-        public User(Name userName, Password password) : this()
+        public User(Name userName, Password password, IEnumerable<Role> roles) : this()
         {
-            UserName = userName;
-            Password = password;
+            SetName(userName);
+            SetPassword(password);
+            SetRoles(roles);
         }
 
         public void SetName(Name name)
