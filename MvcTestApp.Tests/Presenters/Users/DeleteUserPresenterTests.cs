@@ -11,7 +11,7 @@ namespace MvcTestApp.Tests.Presenters.Users
     public class DeleteUserPresenterTests
     {
         [TestMethod]
-        public void Handle_FailedResult_ReturnsNotFoundActionResult()
+        public void Handle_UserNotFound_ReturnsNotFoundActionResult()
         {
             // Arrange
             var response = Response<User>.Fail(new[] { "errorMessage" });
@@ -26,7 +26,7 @@ namespace MvcTestApp.Tests.Presenters.Users
         }
 
         [TestMethod]
-        public void Handle_SuccessfulResult_ReturnsNoContentActionResult()
+        public void Handle_UserDeleted_ReturnsNoContentActionResult()
         {
             // Arrange
             var response = Response<User>.Success(null);

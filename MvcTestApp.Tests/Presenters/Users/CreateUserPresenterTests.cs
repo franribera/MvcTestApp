@@ -15,7 +15,7 @@ namespace MvcTestApp.Tests.Presenters.Users
     public class CreateUserPresenterTests
     {
         [TestMethod]
-        public void Handle_FailedResult_ReturnsConflictActionResult()
+        public void Handle_ExistingUserName_ReturnsConflictActionResult()
         {
             // Arrange
             var response = Response<User>.Fail(new[] { "errorMessage" });
@@ -31,7 +31,7 @@ namespace MvcTestApp.Tests.Presenters.Users
         }
 
         [TestMethod]
-        public void Handle_SuccessfulResult_ReturnsCreatedActionResultWithTheCreatedUser()
+        public void Handle_UserCreated_ReturnsCreatedActionResultWithTheCreatedUser()
         {
             // Arrange
             var createdUser = new UserBuilder()
