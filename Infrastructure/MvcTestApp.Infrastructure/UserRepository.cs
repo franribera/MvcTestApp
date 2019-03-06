@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using MvcTestApp.Domain.Users;
@@ -8,6 +9,7 @@ using MvcTestApp.Domain.ValueObjects;
 
 namespace MvcTestApp.Infrastructure
 {
+    [ExcludeFromCodeCoverage]
     public class UserRepository : IUserRepository
     {
         private static readonly ConcurrentDictionary<Name, User> Users = new ConcurrentDictionary<Name, User>(new List<KeyValuePair<Name, User>>()
