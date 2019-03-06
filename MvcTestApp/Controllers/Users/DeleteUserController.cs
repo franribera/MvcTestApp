@@ -19,7 +19,7 @@ namespace MvcTestApp.Controllers.Users
         }
 
         [HttpDelete("{userName}")]
-        public async Task<IActionResult> Post(string userName)
+        public async Task<IActionResult> Delete(string userName)
         {
             var deleteUserRequest = new DeleteUserRequest(userName);
             await _deleteUserUseCase.Handle(deleteUserRequest, _deleteUserPresenter);
