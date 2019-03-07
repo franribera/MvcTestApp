@@ -11,6 +11,7 @@ using MvcTestApp.Application.Commands.Users.Update;
 using MvcTestApp.Application.Queries.Users;
 using MvcTestApp.Domain.Users;
 using MvcTestApp.Infrastructure;
+using MvcTestApp.Middlewares;
 using MvcTestApp.Presenters.Users;
 
 namespace MvcTestApp
@@ -64,6 +65,7 @@ namespace MvcTestApp
             }
 
             app.UseHttpsRedirection();
+            app.UseMiddleware<ExceptionHandler>();
             app.UseMvc();
         }
     }
