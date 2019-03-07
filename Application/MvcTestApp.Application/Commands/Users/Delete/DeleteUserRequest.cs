@@ -4,11 +4,11 @@ namespace MvcTestApp.Application.Commands.Users.Delete
 {
     public class DeleteUserRequest
     {
-        public string UserName { get; }
+        public Guid Id { get; }
 
-        public DeleteUserRequest(string userName)
+        public DeleteUserRequest(Guid id)
         {
-            UserName = userName ?? throw new ArgumentNullException(nameof(userName), "UserName not set.");
+            Id = id;
         }
     }
 }

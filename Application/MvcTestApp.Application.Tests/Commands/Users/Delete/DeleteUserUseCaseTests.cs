@@ -1,11 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using MvcTestApp.Application.Commands.Users.Delete;
 using MvcTestApp.Application.Infrastructure;
 using MvcTestApp.Common.TestLib.Builders;
 using MvcTestApp.Domain.Users;
-using MvcTestApp.Domain.ValueObjects;
 
 namespace MvcTestApp.Application.Tests.Commands.Users.Delete
 {
@@ -28,10 +28,10 @@ namespace MvcTestApp.Application.Tests.Commands.Users.Delete
         public async Task Handle_NotExistingUser_PassesFailedResultToOutputPort()
         {
             // Arrange
-            const string userName = "userName";
-            var deleteUserRequest = new DeleteUserRequest(userName);
+            var userId = Guid.NewGuid();
+            var deleteUserRequest = new DeleteUserRequest(userId);
             _userRepositoryMock
-                .Setup(mock => mock.Get(It.Is<Name>(name => name.Value == userName)))
+                .Setup(mock => mock.Get(userId))
                 .ReturnsAsync((User) null);
 
             // Act
@@ -48,9 +48,9 @@ namespace MvcTestApp.Application.Tests.Commands.Users.Delete
         {
             // Arrange
             var existingUser = new UserBuilder().Build();
-            var deleteUserRequest = new DeleteUserRequest(existingUser.UserName.Value);
+            var deleteUserRequest = new DeleteUserRequest(existingUser.Id);
             _userRepositoryMock
-                .Setup(mock => mock.Get(It.Is<Name>(name => name.Value == existingUser.UserName.Value)))
+                .Setup(mock => mock.Get(existingUser.Id))
                 .ReturnsAsync(existingUser);
 
             // Act

@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using MvcTestApp.Application.Infrastructure;
 using MvcTestApp.Domain.Users;
-using MvcTestApp.Domain.ValueObjects;
 
 namespace MvcTestApp.Application.Commands.Users.Delete
 {
@@ -16,7 +15,7 @@ namespace MvcTestApp.Application.Commands.Users.Delete
 
         public async Task Handle(DeleteUserRequest request, IOutputPort<Response<User>> outputPort)
         {
-            var user = await _userRepository.Get(new Name(request.UserName));
+            var user = await _userRepository.Get(request.Id);
 
             if (user == null)
             {

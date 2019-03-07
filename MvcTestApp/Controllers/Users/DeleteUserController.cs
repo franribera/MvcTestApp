@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MvcTestApp.Application.Commands.Users.Delete;
 using MvcTestApp.Presenters.Users;
@@ -18,10 +19,10 @@ namespace MvcTestApp.Controllers.Users
             _deleteUserPresenter = deleteUserPresenter;
         }
 
-        [HttpDelete("{userName}")]
-        public async Task<IActionResult> Delete(string userName)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
         {
-            var deleteUserRequest = new DeleteUserRequest(userName);
+            var deleteUserRequest = new DeleteUserRequest(id);
             await _deleteUserUseCase.Handle(deleteUserRequest, _deleteUserPresenter);
 
             return _deleteUserPresenter.ActionResult;

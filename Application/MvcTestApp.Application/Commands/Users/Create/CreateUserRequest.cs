@@ -12,7 +12,7 @@ namespace MvcTestApp.Application.Commands.Users.Create
 
         public CreateUserRequest(string userName, string password, IEnumerable<string> roles)
         {
-            UserName = userName ?? throw new ArgumentNullException(nameof(userName), "UserName not set.");
+            UserName = userName ?? throw new ArgumentNullException(nameof(userName), "Id not set.");
             Password = password ?? throw new ArgumentNullException(nameof(password), "Password not set.");
             Roles = AssertRoles(roles);
         }
