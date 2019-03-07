@@ -29,6 +29,11 @@ namespace MvcTestApp.Infrastructure
             return Task.FromResult(Users.SingleOrDefault(user => user.Key == id).Value);
         }
 
+        public Task<List<User>> GetAll()
+        {
+            return Task.FromResult(Users.Values.ToList());
+        }
+
         public Task Add(User user)
         {
             // I'm assuming it never fails

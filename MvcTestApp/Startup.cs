@@ -7,6 +7,7 @@ using MvcTestApp.Application.Commands.Users;
 using MvcTestApp.Application.Commands.Users.Create;
 using MvcTestApp.Application.Commands.Users.Delete;
 using MvcTestApp.Application.Commands.Users.Update;
+using MvcTestApp.Application.Queries.Users;
 using MvcTestApp.Domain.Users;
 using MvcTestApp.Infrastructure;
 using MvcTestApp.Presenters.Users;
@@ -36,6 +37,8 @@ namespace MvcTestApp
 
             services.AddScoped<IUpdateUserUseCase, UpdateUserUseCase>();
             services.AddScoped<IUpdateUserPresenter, UpdateUserPresenter>();
+
+            services.AddScoped<IUserQueries, UserQueries>();
 
             services.AddSingleton<IUserRepository, UserRepository>();
         }
