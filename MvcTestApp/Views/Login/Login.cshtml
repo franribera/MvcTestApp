@@ -1,0 +1,29 @@
+﻿@model MvcTestApp.Models.Authentication.LoginModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+</head>
+<body>
+    @using (Html.BeginForm("Login", "Login", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.RefererUrl);
+        <div>
+            @Html.LabelFor(model => model.UserName)
+            @Html.TextBoxFor(model => model.UserName)
+        </div>
+        <div>
+            @Html.LabelFor(model => model.Password)
+            @Html.PasswordFor(model => model.Password)
+        </div>
+        <div>
+            <input type="submit" value="Login" />
+        </div>
+    }
+</body>
+</html>

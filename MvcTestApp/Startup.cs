@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
@@ -13,6 +16,8 @@ using MvcTestApp.Domain.Users;
 using MvcTestApp.Infrastructure;
 using MvcTestApp.Middlewares;
 using MvcTestApp.Presenters.Users;
+using AuthenticationService = MvcTestApp.Authentication.AuthenticationService;
+using IAuthenticationService = MvcTestApp.Authentication.IAuthenticationService;
 
 namespace MvcTestApp
 {
@@ -38,6 +43,11 @@ namespace MvcTestApp
                 )
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(o => o.LoginPath = new PathString("/login/login"));
+
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
+
             services.AddScoped<ICreateUserUseCase, CreateUserUseCase>();
             services.AddScoped<ICreateUserPresenter, CreateUserPresenter>();
             services.AddScoped<IUserFactory, UserFactory>();
@@ -49,7 +59,6 @@ namespace MvcTestApp
             services.AddScoped<IUpdateUserPresenter, UpdateUserPresenter>();
 
             services.AddScoped<IUserQueries, UserQueries>();
-
             services.AddSingleton<IUserRepository, UserRepository>();
         }
 
@@ -64,9 +73,17 @@ namespace MvcTestApp
                 app.UseHsts();
             }
 
+            app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseMiddleware<ExceptionHandler>();
+
             app.UseMvc();
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
+            });
         }
     }
 }
