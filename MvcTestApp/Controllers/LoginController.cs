@@ -21,10 +21,9 @@ namespace MvcTestApp.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Login()
+        public IActionResult Login([FromQuery] string returnUrl)
         {
-            var loginModel = new LoginModel {RefererUrl = Request.Headers["Referer"].ToString()};
-            return View(loginModel);
+            return View(new LoginModel{ ReturnUrl = returnUrl});
         }
 
         [HttpPost]
@@ -37,7 +36,15 @@ namespace MvcTestApp.Controllers
                 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
 
-            return Redirect(loginModel.RefererUrl);
+            return Redirect(loginModel.ReturnUrl);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            return RedirectToAction("Login", "Login");
         }
     }
 }

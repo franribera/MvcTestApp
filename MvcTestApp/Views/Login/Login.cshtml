@@ -12,7 +12,7 @@
     @using (Html.BeginForm("Login", "Login", FormMethod.Post))
     {
         @Html.AntiForgeryToken()
-        @Html.HiddenFor(model => model.RefererUrl);
+        @Html.HiddenFor(model => model.ReturnUrl);
         <div>
             @Html.LabelFor(model => model.UserName)
             @Html.TextBoxFor(model => model.UserName)
