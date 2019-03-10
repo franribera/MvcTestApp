@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MvcTestApp.Application.Queries.Users;
 
 namespace MvcTestApp.Controllers.Users
 {
     [Route("api/users")]
+    [Authorize(Roles = "ADMIN")]
     [ApiController]
     public class QueryUsersController : ControllerBase
     {

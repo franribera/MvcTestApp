@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MvcTestApp.Application.Commands.Users.Delete;
 using MvcTestApp.Presenters.Users;
@@ -7,6 +8,7 @@ using MvcTestApp.Presenters.Users;
 namespace MvcTestApp.Controllers.Users
 {
     [Route("api/users")]
+    [Authorize(Roles = "ADMIN")]
     [ApiController]
     public class DeleteUserController : ControllerBase
     {

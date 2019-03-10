@@ -10,6 +10,7 @@ namespace MvcTestApp.Domain.Users
         public static Role PAGE_1 = new Role(new Name("PAGE_1"));
         public static Role PAGE_2 = new Role(new Name("PAGE_2"));
         public static Role PAGE_3 = new Role(new Name("PAGE_3"));
+        public static Role ADMIN = new Role(new Name("ADMIN"));
 
         public Name Name { get; protected set; }
 

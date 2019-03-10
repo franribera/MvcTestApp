@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MvcTestApp.Application.Commands.Users.Create;
 using MvcTestApp.Models.Users;
@@ -7,6 +8,7 @@ using MvcTestApp.Presenters.Users;
 namespace MvcTestApp.Controllers.Users
 {
     [Route("api/users")]
+    [Authorize(Roles = "ADMIN")]
     [ApiController]
     public class CreateUserController : ControllerBase
     {

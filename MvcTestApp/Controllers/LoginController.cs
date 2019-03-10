@@ -1,9 +1,9 @@
-﻿using System.Security.Claims;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MvcTestApp.Models.Users;
 using IAuthenticationService = MvcTestApp.Authentication.IAuthenticationService;
 using LoginModel = MvcTestApp.Models.Authentication.LoginModel;
 
@@ -45,6 +45,15 @@ namespace MvcTestApp.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
             return RedirectToAction("Login", "Login");
+        }
+
+        [HttpGet]
+        public IActionResult Unauthorize()
+        {
+            return View(new UserModel
+            {
+                UserName = HttpContext.User.Identity.Name
+            });
         }
     }
 }

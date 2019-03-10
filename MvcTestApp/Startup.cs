@@ -48,7 +48,7 @@ namespace MvcTestApp
                 .AddCookie(options =>
                 {
                     options.LoginPath = new PathString("/login/login");
-                    options.AccessDeniedPath = new PathString("/login/login");
+                    options.AccessDeniedPath = new PathString("/login/Unauthorize");
                     options.Cookie.Name = "MvcTestApp";
                     options.Cookie.HttpOnly = true;
                     options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
@@ -87,7 +87,6 @@ namespace MvcTestApp
             app.UseHttpsRedirection();
             app.UseMiddleware<ExceptionHandler>();
 
-            app.UseMvc();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

@@ -4,8 +4,8 @@ using MvcTestApp.Models.Users;
 
 namespace MvcTestApp.Controllers
 {
-    [Authorize(Roles = "ADMIN, PAGE_1")]
-    public class Page1Controller : Controller
+    [Authorize(Roles = "ADMIN, PAGE_3")]
+    public class Page3Controller : Controller
     {
         [HttpGet]
         public IActionResult Index()

@@ -16,7 +16,8 @@ namespace MvcTestApp.Infrastructure
         {
             new KeyValuePair<Guid, User>(User.User1.Id, User.User1),
             new KeyValuePair<Guid, User>(User.User2.Id, User.User2),
-            new KeyValuePair<Guid, User>(User.User3.Id, User.User3)
+            new KeyValuePair<Guid, User>(User.User3.Id, User.User3),
+            new KeyValuePair<Guid, User>(User.Admin.Id, User.Admin)
         });
 
         public Task<User> Get(Name username)
