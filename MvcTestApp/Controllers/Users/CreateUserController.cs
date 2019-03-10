@@ -2,13 +2,14 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MvcTestApp.Application.Commands.Users.Create;
+using MvcTestApp.Authentication;
 using MvcTestApp.Models.Users;
 using MvcTestApp.Presenters.Users;
 
 namespace MvcTestApp.Controllers.Users
 {
     [Route("api/users")]
-    [Authorize(Roles = "ADMIN")]
+    [Authorize(Roles = "ADMIN", AuthenticationSchemes = BasicAuthenticationDefaults.AuthenticationScheme)]
     [ApiController]
     public class CreateUserController : ControllerBase
     {

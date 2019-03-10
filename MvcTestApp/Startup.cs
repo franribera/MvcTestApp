@@ -13,6 +13,7 @@ using MvcTestApp.Application.Commands.Users.Create;
 using MvcTestApp.Application.Commands.Users.Delete;
 using MvcTestApp.Application.Commands.Users.Update;
 using MvcTestApp.Application.Queries.Users;
+using MvcTestApp.Authentication;
 using MvcTestApp.Domain.Users;
 using MvcTestApp.Infrastructure;
 using MvcTestApp.Middlewares;
@@ -54,7 +55,8 @@ namespace MvcTestApp
                     options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
                     options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
                     options.SlidingExpiration = true;
-                });
+                })
+                .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>(BasicAuthenticationDefaults.AuthenticationScheme, null);
 
             services.AddScoped<IAuthenticationService, AuthenticationService>();
 
