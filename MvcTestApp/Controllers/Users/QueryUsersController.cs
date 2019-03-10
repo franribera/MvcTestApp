@@ -9,7 +9,7 @@ using MvcTestApp.Authentication;
 namespace MvcTestApp.Controllers.Users
 {
     [Route("api/users")]
-    [Authorize(Roles = "ADMIN", AuthenticationSchemes = BasicAuthenticationDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = BasicAuthenticationDefaults.AuthenticationScheme)]
     [ApiController]
     public class QueryUsersController : ControllerBase
     {
