@@ -2,7 +2,7 @@
 
 namespace MvcTestApp.Components
 {
-    public class SerializerFactory : ISerializerFactory
+    internal class SerializerFactory : ISerializerFactory
     {
         public ISerializer Create(string contentType)
         {

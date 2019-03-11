@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace MvcTestApp.Components
 {
-    public class ContentTypeResolver : IContentTypeResolver
+    internal class ContentTypeResolver : IContentTypeResolver
     {
         public string Resolve(IHeaderDictionary headerDictionary)
         {

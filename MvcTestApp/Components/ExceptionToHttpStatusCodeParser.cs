@@ -4,7 +4,7 @@ using System.Net;
 
 namespace MvcTestApp.Components
 {
-    public class ExceptionToHttpStatusCodeParser : IExceptionToHttpStatusCodeParser
+    internal class ExceptionToHttpStatusCodeParser : IExceptionToHttpStatusCodeParser
     {
         public HttpStatusCode Parse(Exception exception)
         {

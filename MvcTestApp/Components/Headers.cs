@@ -1,6 +1,6 @@
 ﻿namespace MvcTestApp.Components
 {
-    public static class Headers
+    internal static class Headers
     {
         public const string Accept = "Accept";
         public const string Authorization = "Authorization";
