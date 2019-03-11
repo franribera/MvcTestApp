@@ -22,8 +22,7 @@ namespace MvcTestApp.Authentication
         {
             var user = await _userRepository.Get(new Name(userName));
 
-            if (user == null) return null;
-            if (user.Password != new Password(password)) return null;
+            if (user == null || user.Password != new Password(password)) return null;
 
             var claims = new List<Claim> { new Claim(ClaimTypes.Name, userName) };
             claims.AddRange(user.Roles.Select(role => new Claim(ClaimTypes.Role, role.Name.Value)));
