@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Net;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
@@ -15,16 +13,18 @@ namespace MvcTestApp.Middlewares
     {
         private readonly RequestDelegate _next;
         private readonly IContentTypeResolver _contentTypeResolver;
+        private readonly IExceptionToHttpStatusCodeParser _exceptionToHttpStatusCodeParser;
 
         public class Message
         {
             public string Error { get; set; }
         }
 
-        public ExceptionHandler(RequestDelegate next, IContentTypeResolver contentTypeResolver)
+        public ExceptionHandler(RequestDelegate next, IContentTypeResolver contentTypeResolver, IExceptionToHttpStatusCodeParser exceptionToHttpStatusCodeParser)
         {
             _next = next;
             _contentTypeResolver = contentTypeResolver;
+            _exceptionToHttpStatusCodeParser = exceptionToHttpStatusCodeParser;
         }
 
         public async Task Invoke(HttpContext context)
@@ -44,23 +44,8 @@ namespace MvcTestApp.Middlewares
             var contentType = _contentTypeResolver.Resolve(context.Request.Headers);
 
             context.Response.ContentType = contentType;
-            context.Response.StatusCode = ParseStatusCode(exception);
+            context.Response.StatusCode = (int)_exceptionToHttpStatusCodeParser.Parse(exception);
             await context.Response.WriteAsync(SerializeError(contentType, exception.Message));
-        }
-
-        private static int ParseStatusCode(Exception exception)
-        {
-            switch (exception)
-            {
-                case ArgumentException _:
-                    return (int)HttpStatusCode.BadRequest;
-                case KeyNotFoundException _:
-                    return (int)HttpStatusCode.NotFound;
-                case InvalidOperationException _:
-                    return (int)HttpStatusCode.Conflict;
-                default:
-                    return (int)HttpStatusCode.InternalServerError;
-            }
         }
 
         // This logic could be extracted in a new component, but since it is only used here i think it is not needed

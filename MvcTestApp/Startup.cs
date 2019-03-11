@@ -15,6 +15,7 @@ using MvcTestApp.Application.Commands.Users.Update;
 using MvcTestApp.Application.Queries.Users;
 using MvcTestApp.Authentication;
 using MvcTestApp.Domain.Users;
+using MvcTestApp.Extensions;
 using MvcTestApp.Infrastructure;
 using MvcTestApp.Middlewares;
 using MvcTestApp.Presenters.Users;
@@ -58,20 +59,10 @@ namespace MvcTestApp
                 })
                 .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>(BasicAuthenticationDefaults.AuthenticationScheme, null);
 
-            services.AddScoped<IAuthenticationService, AuthenticationService>();
-
-            services.AddScoped<ICreateUserUseCase, CreateUserUseCase>();
-            services.AddScoped<ICreateUserPresenter, CreateUserPresenter>();
-            services.AddScoped<IUserFactory, UserFactory>();
-
-            services.AddScoped<IDeleteUserUseCase, DeleteUserUseCase>();
-            services.AddScoped<IDeleteUserPresenter, DeleteUserPresenter>();
-
-            services.AddScoped<IUpdateUserUseCase, UpdateUserUseCase>();
-            services.AddScoped<IUpdateUserPresenter, UpdateUserPresenter>();
-
-            services.AddScoped<IUserQueries, UserQueries>();
-            services.AddSingleton<IUserRepository, UserRepository>();
+            services
+                .RegisterInfrastructure()
+                .RegisterApplication()
+                .RegisterWeb();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
