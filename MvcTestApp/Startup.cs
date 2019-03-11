@@ -8,19 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MvcTestApp.Application.Commands.Users;
-using MvcTestApp.Application.Commands.Users.Create;
-using MvcTestApp.Application.Commands.Users.Delete;
-using MvcTestApp.Application.Commands.Users.Update;
-using MvcTestApp.Application.Queries.Users;
 using MvcTestApp.Authentication;
-using MvcTestApp.Domain.Users;
 using MvcTestApp.Extensions;
-using MvcTestApp.Infrastructure;
 using MvcTestApp.Middlewares;
-using MvcTestApp.Presenters.Users;
-using AuthenticationService = MvcTestApp.Authentication.AuthenticationService;
-using IAuthenticationService = MvcTestApp.Authentication.IAuthenticationService;
 
 namespace MvcTestApp
 {
@@ -60,6 +50,7 @@ namespace MvcTestApp
                 .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>(BasicAuthenticationDefaults.AuthenticationScheme, null);
 
             services
+                .RegisterCommon()
                 .RegisterInfrastructure()
                 .RegisterApplication()
                 .RegisterWeb();

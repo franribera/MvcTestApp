@@ -1,10 +1,12 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using MvcTestApp.Application.Commands.Users;
 using MvcTestApp.Application.Commands.Users.Create;
 using MvcTestApp.Application.Commands.Users.Delete;
 using MvcTestApp.Application.Commands.Users.Update;
 using MvcTestApp.Application.Queries.Users;
 using MvcTestApp.Authentication;
+using MvcTestApp.Common.Serializers;
 using MvcTestApp.Components;
 using MvcTestApp.Domain.Users;
 using MvcTestApp.Infrastructure;
@@ -36,8 +38,16 @@ namespace MvcTestApp.Extensions
                 .AddScoped<ICreateUserPresenter, CreateUserPresenter>()
                 .AddScoped<IDeleteUserPresenter, DeleteUserPresenter>()
                 .AddScoped<IUpdateUserPresenter, UpdateUserPresenter>()
-                .AddScoped<IContentTypeResolver, ContentTypeResolver>()
-                .AddScoped<IExceptionToHttpStatusCodeParser, ExceptionToHttpStatusCodeParser>();
+                .AddTransient<IContentTypeResolver, ContentTypeResolver>()
+                .AddTransient<IExceptionToHttpStatusCodeParser, ExceptionToHttpStatusCodeParser>()
+                .AddTransient<ISerializerFactory, SerializerFactory>();
+        }
+
+        public static IServiceCollection RegisterCommon(this IServiceCollection services)
+        {
+            return services
+                .AddTransient<ISerializer, JsonSerializer>()
+                .AddTransient<ISerializer, XmlSerializer>();
         }
     }
 }

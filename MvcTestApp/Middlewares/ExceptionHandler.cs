@@ -1,11 +1,7 @@
 ﻿using System;
-using System.IO;
 using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Serialization;
 using Microsoft.AspNetCore.Http;
 using MvcTestApp.Components;
-using Newtonsoft.Json;
 
 namespace MvcTestApp.Middlewares
 {
@@ -14,17 +10,15 @@ namespace MvcTestApp.Middlewares
         private readonly RequestDelegate _next;
         private readonly IContentTypeResolver _contentTypeResolver;
         private readonly IExceptionToHttpStatusCodeParser _exceptionToHttpStatusCodeParser;
+        private readonly ISerializerFactory _serializerFactory;
 
-        public class Message
-        {
-            public string Error { get; set; }
-        }
-
-        public ExceptionHandler(RequestDelegate next, IContentTypeResolver contentTypeResolver, IExceptionToHttpStatusCodeParser exceptionToHttpStatusCodeParser)
+        public ExceptionHandler(RequestDelegate next, IContentTypeResolver contentTypeResolver,
+            IExceptionToHttpStatusCodeParser exceptionToHttpStatusCodeParser, ISerializerFactory serializerFactory)
         {
             _next = next;
             _contentTypeResolver = contentTypeResolver;
             _exceptionToHttpStatusCodeParser = exceptionToHttpStatusCodeParser;
+            _serializerFactory = serializerFactory;
         }
 
         public async Task Invoke(HttpContext context)
@@ -48,22 +42,11 @@ namespace MvcTestApp.Middlewares
             await context.Response.WriteAsync(SerializeError(contentType, exception.Message));
         }
 
-        // This logic could be extracted in a new component, but since it is only used here i think it is not needed
-        private static string SerializeError(string contentType, string exceptionMessage)
+        private string SerializeError(string contentType, string exceptionMessage)
         {
-            var message = new Message { Error = exceptionMessage };
-            if (contentType == ContentType.ApplicationXml)
-            {
-                var xmlSerializer = new XmlSerializer(typeof(Message));
-                using (var stringWriter = new StringWriter())
-                using (var xmlWriter = XmlWriter.Create(stringWriter))
-                {
-                    xmlSerializer.Serialize(xmlWriter, message);
-                    return stringWriter.ToString();
-                }
-            }
-
-            return JsonConvert.SerializeObject(message);
+            var message = new { Error = exceptionMessage };
+            var serializer = _serializerFactory.Create(contentType);
+            return serializer.Serialize(message);
         }
     }
 }

@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Application\MvcTestApp.Application\MvcTestApp.Application.csproj" />
+    <ProjectReference Include="..\Common\MvcTestApp.Common\MvcTestApp.Common.csproj" />
     <ProjectReference Include="..\Domain\MvcTestApp.Domain\MvcTestApp.Domain.csproj" />
     <ProjectReference Include="..\Infrastructure\MvcTestApp.Infrastructure\MvcTestApp.Infrastructure.csproj" />
   </ItemGroup>
