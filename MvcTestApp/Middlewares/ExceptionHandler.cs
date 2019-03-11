@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 using Microsoft.AspNetCore.Http;
+using MvcTestApp.Components;
 using Newtonsoft.Json;
 
 namespace MvcTestApp.Middlewares
@@ -39,7 +40,7 @@ namespace MvcTestApp.Middlewares
 
         private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
-            var contentType = context.Request.Headers["Accept"].Any() ? context.Request.Headers["Accept"].First() : "application/json";
+            var contentType = context.Request.Headers[Headers.Accept].Any() ? context.Request.Headers[Headers.Accept].First() : "application/json";
 
             context.Response.ContentType = contentType;
             context.Response.StatusCode = ParseStatusCode(exception);
