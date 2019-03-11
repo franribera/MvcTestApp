@@ -40,7 +40,7 @@ namespace MvcTestApp.Middlewares
 
         private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
-            var contentType = context.Request.Headers[Headers.Accept].Any() ? context.Request.Headers[Headers.Accept].First() : "application/json";
+            var contentType = context.Request.Headers[Headers.Accept].Any() ? context.Request.Headers[Headers.Accept].First() : ContentType.Application_Json;
 
             context.Response.ContentType = contentType;
             context.Response.StatusCode = ParseStatusCode(exception);
@@ -67,7 +67,7 @@ namespace MvcTestApp.Middlewares
         private static string SerializeError(string contentType, string exceptionMessage)
         {
             var message = new Message { Error = exceptionMessage };
-            if (contentType == "application/xml")
+            if (contentType == ContentType.Application_Xml)
             {
                 var xmlSerializer = new XmlSerializer(typeof(Message));
                 using (var stringWriter = new StringWriter())
