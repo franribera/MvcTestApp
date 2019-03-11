@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Xml;
@@ -15,15 +14,17 @@ namespace MvcTestApp.Middlewares
     public class ExceptionHandler
     {
         private readonly RequestDelegate _next;
+        private readonly IContentTypeResolver _contentTypeResolver;
 
         public class Message
         {
             public string Error { get; set; }
         }
 
-        public ExceptionHandler(RequestDelegate next)
+        public ExceptionHandler(RequestDelegate next, IContentTypeResolver contentTypeResolver)
         {
             _next = next;
+            _contentTypeResolver = contentTypeResolver;
         }
 
         public async Task Invoke(HttpContext context)
@@ -38,9 +39,9 @@ namespace MvcTestApp.Middlewares
             }
         }
 
-        private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
+        private async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
-            var contentType = context.Request.Headers[Headers.Accept].Any() ? context.Request.Headers[Headers.Accept].First() : ContentType.Application_Json;
+            var contentType = _contentTypeResolver.Resolve(context.Request.Headers);
 
             context.Response.ContentType = contentType;
             context.Response.StatusCode = ParseStatusCode(exception);
@@ -63,11 +64,10 @@ namespace MvcTestApp.Middlewares
         }
 
         // This logic could be extracted in a new component, but since it is only used here i think it is not needed
-        // Also the content-type concept could be extracted in a type to not have magic string, but here applies the same reason.
         private static string SerializeError(string contentType, string exceptionMessage)
         {
             var message = new Message { Error = exceptionMessage };
-            if (contentType == ContentType.Application_Xml)
+            if (contentType == ContentType.ApplicationXml)
             {
                 var xmlSerializer = new XmlSerializer(typeof(Message));
                 using (var stringWriter = new StringWriter())

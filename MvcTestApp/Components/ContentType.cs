@@ -2,7 +2,7 @@
 {
     public static class ContentType
     {
-        public const string Application_Json = "application/json";
-        public const string Application_Xml = "application/xml";
+        public const string ApplicationJson = "application/json";
+        public const string ApplicationXml = "application/xml";
     }
 }
