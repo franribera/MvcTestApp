@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 
-namespace MvcTestApp.Components
+namespace MvcTestApp.Components.Exceptions
 {
     public interface IExceptionToHttpStatusCodeParser
     {

@@ -8,6 +8,8 @@ using MvcTestApp.Application.Queries.Users;
 using MvcTestApp.Authentication;
 using MvcTestApp.Common.Serializers;
 using MvcTestApp.Components;
+using MvcTestApp.Components.ContentType;
+using MvcTestApp.Components.Exceptions;
 using MvcTestApp.Domain.Users;
 using MvcTestApp.Http;
 using MvcTestApp.Infrastructure;

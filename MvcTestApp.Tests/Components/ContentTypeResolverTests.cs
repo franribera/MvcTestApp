@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using MvcTestApp.Common.Serializers;
 using MvcTestApp.Components;
+using MvcTestApp.Components.ContentType;
 using MvcTestApp.Http;
 
 namespace MvcTestApp.Tests.Components

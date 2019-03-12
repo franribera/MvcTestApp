@@ -3,7 +3,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Http;
 using MvcTestApp.Http;
 
-namespace MvcTestApp.Components
+namespace MvcTestApp.Components.ContentType
 {
     public class ContentTypeResolver : IContentTypeResolver
     {
@@ -17,7 +17,7 @@ namespace MvcTestApp.Components
         public IApplicationContentType Resolve(IHeaderDictionary headerDictionary)
         {
             var headers = headerDictionary ?? new HeaderDictionary();
-            var contentType = headers[Headers.Accept].Any() ? headers[Headers.Accept].First() : ContentType.ApplicationJson;
+            var contentType = headers[Headers.Accept].Any() ? headers[Headers.Accept].First() : Http.ContentType.ApplicationJson;
 
             return _contentTypes.Single(applicationContentType => applicationContentType.HeaderValue == contentType);
         }

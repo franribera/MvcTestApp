@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using MvcTestApp.Components;
+using MvcTestApp.Components.ContentType;
+using MvcTestApp.Components.Exceptions;
 
 namespace MvcTestApp.Middlewares
 {
