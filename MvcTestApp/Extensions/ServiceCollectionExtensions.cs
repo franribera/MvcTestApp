@@ -9,6 +9,7 @@ using MvcTestApp.Authentication;
 using MvcTestApp.Common.Serializers;
 using MvcTestApp.Components;
 using MvcTestApp.Domain.Users;
+using MvcTestApp.Http;
 using MvcTestApp.Infrastructure;
 using MvcTestApp.Presenters.Users;
 
@@ -39,15 +40,16 @@ namespace MvcTestApp.Extensions
                 .AddScoped<IDeleteUserPresenter, DeleteUserPresenter>()
                 .AddScoped<IUpdateUserPresenter, UpdateUserPresenter>()
                 .AddTransient<IContentTypeResolver, ContentTypeResolver>()
-                .AddTransient<IExceptionToHttpStatusCodeParser, ExceptionToHttpStatusCodeParser>()
-                .AddTransient<ISerializerFactory, SerializerFactory>();
+                .AddTransient<IApplicationContentType, ApplicationJsonContentType>()
+                .AddTransient<IApplicationContentType, ApplicationXmlContentType>()
+                .AddTransient<IExceptionToHttpStatusCodeParser, ExceptionToHttpStatusCodeParser>();
         }
 
         public static IServiceCollection RegisterCommon(this IServiceCollection services)
         {
             return services
-                .AddTransient<ISerializer, JsonSerializer>()
-                .AddTransient<ISerializer, XmlSerializer>();
+                .AddTransient<IJsonSerializer, JsonSerializer>()
+                .AddTransient<IXmlSerializer, XmlSerializer>();
         }
     }
 }

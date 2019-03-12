@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MvcTestApp.Components;
+using MvcTestApp.Http;
 using IAuthenticationService = MvcTestApp.Authentication.IAuthenticationService;
 
 namespace MvcTestApp.Middlewares

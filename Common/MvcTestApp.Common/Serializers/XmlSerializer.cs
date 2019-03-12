@@ -3,7 +3,7 @@ using System.Xml;
 
 namespace MvcTestApp.Common.Serializers
 {
-    public class XmlSerializer : ISerializer
+    public class XmlSerializer : IXmlSerializer
     {
         public string Serialize<TType>(TType value) where TType : class
         {

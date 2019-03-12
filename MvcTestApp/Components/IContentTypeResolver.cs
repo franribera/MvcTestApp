@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
+using MvcTestApp.Http;
 
 namespace MvcTestApp.Components
 {
     public interface IContentTypeResolver
     {
-        string Resolve(IHeaderDictionary headerDictionary);
+        IApplicationContentType Resolve(IHeaderDictionary headerDictionary);
     }
 }

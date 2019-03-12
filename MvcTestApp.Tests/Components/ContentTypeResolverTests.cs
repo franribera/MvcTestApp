@@ -3,56 +3,76 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using MvcTestApp.Common.Serializers;
 using MvcTestApp.Components;
+using MvcTestApp.Http;
 
 namespace MvcTestApp.Tests.Components
 {
     [TestClass]
     public class ContentTypeResolverTests
     {
-        private ContentTypeResolver _contentTypeResolver;
+        private Mock<IJsonSerializer> _jsonSerializerMock;
+        private Mock<IXmlSerializer> _xmlSerializerMock;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            _contentTypeResolver = new ContentTypeResolver();
+            _jsonSerializerMock = new Mock<IJsonSerializer>();
+            _xmlSerializerMock = new Mock<IXmlSerializer>();
         }
 
         [TestMethod]
         public void Resolve_NullHeadersCollection_ReturnsJsonAsDefault()
         {
-            TestResolve(null, ContentType.ApplicationJson);
+            // Arrange
+            var contentTypes = new[] {new ApplicationJsonContentType(_jsonSerializerMock.Object)};
+            var contentTypeResolver = new ContentTypeResolver(contentTypes);
+
+            // Act
+            var contentType = contentTypeResolver.Resolve(null);
+
+            // Assert
+            Assert.AreEqual(ContentType.ApplicationJson, contentType.HeaderValue);
         }
 
         [TestMethod]
         public void Resolve_EmptyHeadersCollection_ReturnsJsonAsDefault()
         {
-            TestResolve(new Dictionary<string, StringValues>(), ContentType.ApplicationJson);
+            // Arrange
+            var contentTypes = new[] { new ApplicationJsonContentType(_jsonSerializerMock.Object) };
+            var contentTypeResolver = new ContentTypeResolver(contentTypes);
+
+            // Act
+            var contentType = contentTypeResolver.Resolve(new HeaderDictionary());
+
+            // Assert
+            Assert.AreEqual(ContentType.ApplicationJson, contentType.HeaderValue);
         }
 
         [TestMethod]
         public void Resolve_HeadersCollectionWithAnyAcceptedContentType_ReturnsTheContentTypeEquivalentToTheFirstOne()
         {
+            // Arrange
             const string expectedContentType = ContentType.ApplicationXml;
-
             var headers = new Dictionary<string, StringValues>
             {
                 { Headers.Accept, new StringValues(new []{ expectedContentType, ContentType.ApplicationJson})}
             };
 
-            TestResolve(headers, expectedContentType);
-        }
+            var contentTypes = new IApplicationContentType[]
+            {
+                new ApplicationXmlContentType(_xmlSerializerMock.Object), 
+                new ApplicationJsonContentType(_jsonSerializerMock.Object)
+            };
 
-        private void TestResolve(Dictionary<string, StringValues> headerDictionary, string expectedContentType)
-        {
-            // Arrange
-            var headers = new HeaderDictionary(headerDictionary);
+            var contentTypeResolver = new ContentTypeResolver(contentTypes);
 
             // Act
-            var contentType = _contentTypeResolver.Resolve(headers);
+            var contentType = contentTypeResolver.Resolve(new HeaderDictionary(headers));
 
             // Assert
-            Assert.AreEqual(expectedContentType, contentType);
+            Assert.AreEqual(expectedContentType, contentType.HeaderValue);
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace MvcTestApp.Common.Serializers
 {
-    public class JsonSerializer : ISerializer
+    public class JsonSerializer : IJsonSerializer
     {
         public string Serialize<TType>(TType value) where TType : class
         {

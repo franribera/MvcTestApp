@@ -10,15 +10,13 @@ namespace MvcTestApp.Middlewares
         private readonly RequestDelegate _next;
         private readonly IContentTypeResolver _contentTypeResolver;
         private readonly IExceptionToHttpStatusCodeParser _exceptionToHttpStatusCodeParser;
-        private readonly ISerializerFactory _serializerFactory;
 
         public ExceptionHandler(RequestDelegate next, IContentTypeResolver contentTypeResolver,
-            IExceptionToHttpStatusCodeParser exceptionToHttpStatusCodeParser, ISerializerFactory serializerFactory)
+            IExceptionToHttpStatusCodeParser exceptionToHttpStatusCodeParser)
         {
             _next = next;
             _contentTypeResolver = contentTypeResolver;
             _exceptionToHttpStatusCodeParser = exceptionToHttpStatusCodeParser;
-            _serializerFactory = serializerFactory;
         }
 
         public async Task Invoke(HttpContext context)
@@ -37,16 +35,9 @@ namespace MvcTestApp.Middlewares
         {
             var contentType = _contentTypeResolver.Resolve(context.Request.Headers);
 
-            context.Response.ContentType = contentType;
+            context.Response.ContentType = contentType.HeaderValue;
             context.Response.StatusCode = (int)_exceptionToHttpStatusCodeParser.Parse(exception);
-            await context.Response.WriteAsync(SerializeError(contentType, exception.Message));
-        }
-
-        private string SerializeError(string contentType, string exceptionMessage)
-        {
-            var message = new { Error = exceptionMessage };
-            var serializer = _serializerFactory.Create(contentType);
-            return serializer.Serialize(message);
+            await context.Response.WriteAsync(contentType.Serialize(new { Error = exception.Message}));
         }
     }
 }
