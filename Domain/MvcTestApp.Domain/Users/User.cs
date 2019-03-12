@@ -12,7 +12,7 @@ namespace MvcTestApp.Domain.Users
         public static User User1 = new User(new Name("User1"), new Password("User1"), new List<Role> {Role.PAGE_1});
         public static User User2 = new User(new Name("User2"), new Password("User2"), new List<Role> {Role.PAGE_2});
         public static User User3 = new User(new Name("User3"), new Password("User3"), new List<Role> {Role.PAGE_3});
-        public static User Admin = new User(new Name("Admin"), new Password("Admin"), new List<Role> {Role.ADMIN});
+        public static User Admin = new User(new Name("Admin"), new Password("Admin"), new List<Role> {Role.ADMIN, Role.PAGE_1, Role.PAGE_2, Role.PAGE_3});
 
         private ICollection<Role> _roles;
 

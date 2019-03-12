@@ -4,7 +4,7 @@ using MvcTestApp.Models.Users;
 
 namespace MvcTestApp.Controllers
 {
-    [Authorize(Roles = "ADMIN, PAGE_3")]
+    [Authorize(Roles = "PAGE_3")]
     public class Page3Controller : Controller
     {
         [HttpGet]
