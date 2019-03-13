@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using MvcTestApp.Components;
-using MvcTestApp.Http;
+using Microsoft.Net.Http.Headers;
 using IAuthenticationService = MvcTestApp.Authentication.IAuthenticationService;
 
 namespace MvcTestApp.Middlewares
@@ -30,13 +29,13 @@ namespace MvcTestApp.Middlewares
 
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
-            if (!Request.Headers.ContainsKey(Headers.Authorization))
+            if (!Request.Headers.ContainsKey(HeaderNames.Authorization))
                 return AuthenticateResult.Fail("Missing Authorization Header");
 
             ClaimsPrincipal claimsPrincipal;
             try
             {
-                var authHeader = AuthenticationHeaderValue.Parse(Request.Headers[Headers.Authorization]);
+                var authHeader = AuthenticationHeaderValue.Parse(Request.Headers[HeaderNames.Authorization]);
                 var credentialBytes = Convert.FromBase64String(authHeader.Parameter);
                 var credentials = Encoding.UTF8.GetString(credentialBytes).Split(':');
                 var username = credentials[0];

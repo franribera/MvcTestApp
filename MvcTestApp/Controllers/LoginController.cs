@@ -1,8 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System.Security.Principal;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MvcTestApp.Domain.Users;
 using MvcTestApp.Models.Users;
 using IAuthenticationService = MvcTestApp.Authentication.IAuthenticationService;
 using LoginModel = MvcTestApp.Models.Authentication.LoginModel;
@@ -36,7 +38,11 @@ namespace MvcTestApp.Controllers
                 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
 
-            return Redirect(loginModel.ReturnUrl);
+            var redirectionView = string.IsNullOrWhiteSpace(loginModel.ReturnUrl)
+                ? ResolveHomePageFromRole(claimsPrincipal)
+                : loginModel.ReturnUrl;
+
+            return Redirect(redirectionView);
         }
 
         [HttpGet]
@@ -54,6 +60,19 @@ namespace MvcTestApp.Controllers
             {
                 UserName = HttpContext.User.Identity.Name
             });
+        }
+
+        private static string ResolveHomePageFromRole(IPrincipal claimsPrincipal)
+        {
+            // This breaks the OCP
+
+            if (claimsPrincipal.IsInRole(role: Role.PAGE_2.Name.Value))
+                return "/Page2";
+
+            if (claimsPrincipal.IsInRole(role: Role.PAGE_3.Name.Value))
+                return "/Page3";
+
+            return "/Page1";
         }
     }
 }
