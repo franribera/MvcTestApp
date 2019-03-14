@@ -26,7 +26,39 @@ namespace MvcTestApp.FunctionalTests
             return await Get(new Uri(relativeUrl, UriKind.Relative));
         }
 
-        public async Task<HttpResponseMessage> Get(Uri relativeUrl)
+        public async Task<HttpResponseMessage> Post(string relativeUrl, IDictionary<string, string> formValues)
+        {
+            var relativeUrlUri = new Uri(relativeUrl, UriKind.Relative);
+            var absoluteUrl = new Uri(_testServer.BaseAddress, relativeUrlUri);
+
+            var requestBuilder = _testServer.CreateRequest(absoluteUrl.ToString());
+            AddCookies(requestBuilder, absoluteUrl);
+
+            var response = await requestBuilder.And(message =>
+            {
+                message.Content = new FormUrlEncodedContent(formValues);
+            }).PostAsync();
+
+            UpdateCookies(response, absoluteUrl);
+
+            return response;
+        }
+
+        public async Task<HttpResponseMessage> FollowRedirect(HttpResponseMessage response)
+        {
+            if (response.StatusCode != HttpStatusCode.Moved && response.StatusCode != HttpStatusCode.Found)
+            {
+                return response;
+            }
+            var redirectUrl = new Uri(response.Headers.Location.ToString(), UriKind.RelativeOrAbsolute);
+            if (redirectUrl.IsAbsoluteUri)
+            {
+                redirectUrl = new Uri(redirectUrl.PathAndQuery, UriKind.Relative);
+            }
+            return await Get(redirectUrl);
+        }
+
+        private async Task<HttpResponseMessage> Get(Uri relativeUrl)
         {
             var absoluteUrl = new Uri(_testServer.BaseAddress, relativeUrl);
             var requestBuilder = _testServer.CreateRequest(absoluteUrl.ToString());
@@ -55,39 +87,6 @@ namespace MvcTestApp.FunctionalTests
                     Cookies.SetCookies(absoluteUrl, cookie);
                 }
             }
-        }
-
-        public async Task<HttpResponseMessage> Post(string relativeUrl, IDictionary<string, string> formValues)
-        {
-            return await Post(new Uri(relativeUrl, UriKind.Relative), formValues);
-        }
-
-        public async Task<HttpResponseMessage> Post(Uri relativeUrl, IDictionary<string, string> formValues)
-        {
-            var absoluteUrl = new Uri(_testServer.BaseAddress, relativeUrl);
-            var requestBuilder = _testServer.CreateRequest(absoluteUrl.ToString());
-            AddCookies(requestBuilder, absoluteUrl);
-            var content = new FormUrlEncodedContent(formValues);
-            var response = await requestBuilder.And(message =>
-            {
-                message.Content = content;
-            }).PostAsync();
-            UpdateCookies(response, absoluteUrl);
-            return response;
-        }
-
-        public async Task<HttpResponseMessage> FollowRedirect(HttpResponseMessage response)
-        {
-            if (response.StatusCode != HttpStatusCode.Moved && response.StatusCode != HttpStatusCode.Found)
-            {
-                return response;
-            }
-            var redirectUrl = new Uri(response.Headers.Location.ToString(), UriKind.RelativeOrAbsolute);
-            if (redirectUrl.IsAbsoluteUri)
-            {
-                redirectUrl = new Uri(redirectUrl.PathAndQuery, UriKind.Relative);
-            }
-            return await Get(redirectUrl);
         }
     }
 }
