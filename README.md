@@ -25,10 +25,10 @@ Id | UserName | Password | Roles
 
 These view will redirect to the login page in case of not authenticated user. After login, tue user will be redirect to the page that was intended to access.
 
-**Login view:** https://localhost:5001/login/login
-**Page1 view:** https://localhost:5001/page1
-**Page2 view:** https://localhost:5001/page2
-**Page3 view:** https://localhost:5001/page3
++ **Login view:** https://localhost:5001/login/login
++ **Page1 view:** https://localhost:5001/page1
++ **Page2 view:** https://localhost:5001/page2
++ **Page3 view:** https://localhost:5001/page3
 
 #### Api URLs
 
@@ -37,13 +37,13 @@ Suported mediatypes are **application/json** and **application/xml**.
 
 Endpoints available for all users:
 
-[GET] https://localhost:5001/api/users/{id}
-[GET] https://localhost:5001/api/users
++ [GET] https://localhost:5001/api/users/{id}
++ [GET] https://localhost:5001/api/users
 
 Endpoints available for Admin user:
-[POST] https://localhost:5001/api/user
-[PUT] https://localhost:5001/api/users/{id}
-[DELETE] https://localhost:5001/api/users/{id}
++ [POST] https://localhost:5001/api/user
++ PUT] https://localhost:5001/api/users/{id}
++ [DELETE] https://localhost:5001/api/users/{id}
 
 Enjoy!
 
