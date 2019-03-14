@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
+using Microsoft.Net.Http.Headers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using MvcTestApp.Common.Serializers;
-using MvcTestApp.Components;
 using MvcTestApp.Components.ContentType;
 using MvcTestApp.Http;
 
@@ -58,7 +58,7 @@ namespace MvcTestApp.Tests.Components
             const string expectedContentType = ContentType.ApplicationXml;
             var headers = new Dictionary<string, StringValues>
             {
-                { Headers.Accept, new StringValues(new []{ expectedContentType, ContentType.ApplicationJson})}
+                { HeaderNames.Accept, new StringValues(new []{ expectedContentType, ContentType.ApplicationJson})}
             };
 
             var contentTypes = new IApplicationContentType[]

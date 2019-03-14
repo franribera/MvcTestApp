@@ -8,7 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace MvcTestApp.FunctionalTests
 {
     [TestClass]
-    public class FunctionalTests
+    public class MvcFunctionalTests
     {
         private Server _server;
 
@@ -127,5 +127,7 @@ namespace MvcTestApp.FunctionalTests
             // Assert
             Assert.AreEqual(accessGranted, response.RequestMessage.RequestUri.AbsolutePath != unauthorieze);
         }
+
+
     }
 }
