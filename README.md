@@ -2,7 +2,7 @@
 
 #### Pre-Requisits:
 
-1. Install NetCore [SDK](https://dotnet.microsoft.com/download) 2.2.104 or newer.
+1. [Download]((https://dotnet.microsoft.com/download)) and install NetCore SDK or Runtime 2.2.104 or newer.
 2. After install open a CommandLine and run "dotnet --verion" to verify the installation.
 3. In case you want to use Visual Studio, in the MvcTestApp.sln you could fine the supported versions:
 
