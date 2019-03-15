@@ -2,7 +2,7 @@
 
 #### Pre-Requisits:
 
-1. [Download]((https://dotnet.microsoft.com/download)) and install NetCore SDK or Runtime 2.2.104 or newer.
+1. [Download]((https://dotnet.microsoft.com/download)) and install NetCore SDK or Runtime 2.2.105 or newer.
 2. After install open a CommandLine and run "dotnet --verion" to verify the installation.
 3. Run "dotnet dev-certs https --trust".
 
@@ -11,14 +11,18 @@ In case you want to use Visual Studio, these are supported versions:
 VisualStudioVersion = 15.0.28307.421
 MinimumVisualStudioVersion = 10.0.40219.1
 ```
-1. Open the MvcTestApp.sln with Visual Studio.
-2. In the solution explorer, right click on MvcTestApp project and select "Set as Startup project"
-3. Press F5 to run the solution.
-4. Your predefined browser will oven the login view.
-
 #### Steps to run the app:
+CommandLine:
 1. Open a CommandLine and go to the path of MvcTestApp.csproj. Windows example: "cd c:\MvcTestApp\MvcTestApp".
-2. run command "dotnet run". It will build the solution and start the application at http://localhost:5000 or https://localhost:5001.
+2. run command **"dotnet run"**. It will build the solution and start the application at http://localhost:5000 or https://localhost:5001.
+3. In the command line, move to the .sln folder, in the example "c:\MvcTestApp\" and type **"dotnet test"** to run all the test from solution.
+
+VisualStudio
+1. Open the MvcTestApp.sln with Visual Studio.
+2. In the solution explorer, right click on MvcTestApp project and select **"Set as Startup project"**
+3. Press F5 to run the solution.
+4. Your predefined browser will open the login view.
+5. Go to **Test -> run -> All Tests** to run all the tests from solution.
 
 #### Built in users
 
