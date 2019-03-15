@@ -29,6 +29,13 @@ namespace MvcTestApp.FunctionalTests
             _client = _testServer.CreateClient();
         }
 
+        [TestCleanup]
+        public void TestCleanup()
+        {
+            _client.Dispose();
+            _testServer.Dispose();
+        }
+
         [TestMethod]
         public async Task GetById_Without_Basic_Authentication_Header_Returns_401_Unathorized()
         {

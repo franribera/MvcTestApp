@@ -82,9 +82,9 @@ namespace MvcTestApp.FunctionalTests
         [DataRow("User2", false)]
         [DataRow("User3", false)]
         [DataRow("Admin", true)]
-        public async Task Page1_Can_Only_Be_Accessed_By_PAGE1_Role(string userName, bool expectedRedirectionPage)
+        public async Task Page1_Can_Only_Be_Accessed_By_PAGE1_Role(string userName, bool accessGranted)
         {
-            await TestPageAccess("/Page1", userName, expectedRedirectionPage);
+            await TestPageAccess("/Page1", userName, accessGranted);
         }
 
         [DataTestMethod]
@@ -92,9 +92,9 @@ namespace MvcTestApp.FunctionalTests
         [DataRow("User2", true)]
         [DataRow("User3", false)]
         [DataRow("Admin", true)]
-        public async Task Page2_Can_Only_Be_Accessed_By_PAGE2_Role(string userName, bool expectedRedirectionPage)
+        public async Task Page2_Can_Only_Be_Accessed_By_PAGE2_Role(string userName, bool accessGranted)
         {
-            await TestPageAccess("/Page2", userName, expectedRedirectionPage);
+            await TestPageAccess("/Page2", userName, accessGranted);
         }
 
         [DataTestMethod]
@@ -102,9 +102,9 @@ namespace MvcTestApp.FunctionalTests
         [DataRow("User2", false)]
         [DataRow("User3", true)]
         [DataRow("Admin", true)]
-        public async Task Page3_Can_Only_Be_Accessed_By_PAGE3_Role(string userName, bool expectedRedirectionPage)
+        public async Task Page3_Can_Only_Be_Accessed_By_PAGE3_Role(string userName, bool accessGranted)
         {
-            await TestPageAccess("/Page3", userName, expectedRedirectionPage);
+            await TestPageAccess("/Page3", userName, accessGranted);
         }
 
         private async Task TestPageAccess(string intendedDestinationPage, string userName, bool accessGranted)
