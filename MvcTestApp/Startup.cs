@@ -71,7 +71,12 @@ namespace MvcTestApp
             app.UseAuthentication()
                .UseHttpsRedirection()
                .UseMiddleware<ExceptionHandler>()
-               .UseMvc();
+               .UseMvc(routes =>
+                {
+                    routes.MapRoute(
+                        name: "default",
+                        template: "{controller=Home}/{action=Index}/{id?}");
+                });
         }
     }
 }
