@@ -30,10 +30,9 @@ namespace MvcTestApp
                     {
                         config.RespectBrowserAcceptHeader = true;
                         config.ReturnHttpNotAcceptable = true;
-                        config.OutputFormatters.Add(new XmlSerializerOutputFormatter());
-                        config.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
                     }
                 )
+                .AddXmlSerializerFormatters()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

@@ -117,7 +117,7 @@ namespace MvcTestApp.FunctionalTests
             await TestApiEndpoint(
                 $"api/users/{User.User1.Id}",
                 basicAuthentication,
-                HttpStatusCode.OK,
+                (HttpStatusCode)expectedCode,
                 builder => builder.SendAsync("DELETE"));
         }
 

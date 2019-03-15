@@ -34,7 +34,7 @@ namespace MvcTestApp.Application.Queries.Users
             {
                 UserName = user.UserName.Value,
                 Id = user.Id,
-                Roles = user.Roles.Select(role => role.Name.Value)
+                Roles = user.Roles.Select(role => role.Name.Value).ToArray()
             };
         }
 
