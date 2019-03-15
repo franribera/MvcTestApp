@@ -23,7 +23,7 @@ namespace MvcTestApp.Presenters.Users
             {
                 UserName = user.UserName.Value,
                 Id = user.Id,
-                Roles = user.Roles.Select(role => role.Name.Value).ToList()
+                Roles = user.Roles.Select(role => role.Name.Value).ToArray()
             };
         }
     }
