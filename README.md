@@ -3,7 +3,7 @@
 #### Pre-Requisits:
 
 1. [Download]((https://dotnet.microsoft.com/download)) and install NetCore SDK or Runtime 2.2.105 or newer.
-2. After install open a CommandLine and run "dotnet --verion" to verify the installation.
+2. After install open a CommandLine and run "dotnet --version" to verify the installation.
 3. Run "dotnet dev-certs https --trust".
 
 In case you want to use Visual Studio, these are supported versions:
