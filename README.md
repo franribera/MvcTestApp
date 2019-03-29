@@ -35,7 +35,7 @@ VisualStudio
 
 #### Mvc Views URLs
 
-These view will redirect to the login page in case of not authenticated user. After login, tue user will be redirect to the page that was intended to access.
+These view will redirect to the login page in case of not authenticated user. After login, the user will be redirect to the page that was intended to access.
 
 + **Login view:** https://localhost:5001/login/login
 + **Page1 view:** https://localhost:5001/page1
